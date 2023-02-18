@@ -53,8 +53,8 @@ jobs:
     - name: 下载插件
       run: |
         pwd
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
+        ./openwrt/scripts/feeds update -a
+        ./openwrt/scripts/feeds install -a
 
     - name: 更改设置
       run: |
