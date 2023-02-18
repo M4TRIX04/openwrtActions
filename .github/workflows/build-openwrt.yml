@@ -1,11 +1,11 @@
+# Copyrihgt 2023 
+# 
 #
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
-# https://github.com/P3TERX/Actions-OpenWrt
-# Description: Build OpenWrt using GitHub Actions
+# Copyright (C) 2019 P3TERX
+# <https://github.com/P3TERX/Actions-OpenWrt>
+
+# Copyright (C) 2020 KFERMercer
+# <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
 name: Build OpenWrt
@@ -21,7 +21,7 @@ env:
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
-  UPLOAD_BIN_DIR: false
+  UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
