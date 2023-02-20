@@ -8,7 +8,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: Build OpenWrt
+name: Build AX6_OpenWrt
 
 on:
   repository_dispatch:
