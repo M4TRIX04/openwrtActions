@@ -65,7 +65,7 @@ jobs:
     - name: 加载自定义设置
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        cat > target/linux/ipq807x/image/generic.mk<<-\EOF \
+        cat > openwrt/target/linux/ipq807x/image/generic.mk<<-\EOF \
          \
         define Device/redmi_ax6 \
                 $(call Device/xiaomi_ax3600) \
