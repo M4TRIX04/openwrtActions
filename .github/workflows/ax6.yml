@@ -65,14 +65,7 @@ jobs:
     - name: 加载自定义设置
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        echo ' ' >>openwrt/target/linux/ipq807x/image/generic.mk
-        echo 'define Device/redmi_ax6' >>openwrt/target/linux/ipq807x/image/generic.mk
-        echo '        $(call Device/xiaomi_ax3600)' >>openwrt/target/linux/ipq807x/image/generic.mk
-        echo '        DEVICE_VENDOR := Redmi' >>openwrt/target/linux/ipq807x/image/generic.mk
-        echo '        DEVICE_MODEL := AX6' >>openwrt/target/linux/ipq807x/image/generic.mk
-        echo '        DEVICE_PACKAGES := ipq-wifi-redmi_ax6 uboot-envtools' >>openwrt/target/linux/ipq807x/image/generic.mk
-        echo 'endef' >>openwrt/target/linux/ipq807x/image/generic.mk
-        echo 'TARGET_DEVICES += redmi_ax6' >>openwrt/target/linux/ipq807x/image/generic.mk
+        cp -rf $GITHUB_WORKSPACE/ax6_generic.mk openwrt/target/linux/ipq807x/image/generic.mk
         chmod +x $DIY_P1_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
