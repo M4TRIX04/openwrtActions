@@ -22,7 +22,7 @@ env:
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_TARGETS: true
-  UPLOAD_BIN_PARKAGES: true
+  UPLOAD_BIN_PACKAGES: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
@@ -120,7 +120,7 @@ jobs:
         
     - name: 上传bin_packages压缩目录
       uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_PARKAGES == 'true'
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_PACKAGES == 'true'
       with:
         name: OpenWrt_bin_parkages_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ./openwrt/bin/packages/
