@@ -118,12 +118,12 @@ jobs:
         name: OpenWrt_bin_targets_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ./openwrt/bin/targets/
         
-    - name: 上传bin_parkages压缩目录
+    - name: 上传bin_packages压缩目录
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_PARKAGES == 'true'
       with:
         name: OpenWrt_bin_parkages_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: ./openwrt/bin/parkages/
+        path: ./openwrt/bin/packages/
 
     - name: 整理编译好的固件
       id: organize
