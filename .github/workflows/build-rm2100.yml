@@ -21,7 +21,7 @@ env:
   CONFIG_FILE: rm2100.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
-  UPLOAD_BIN_TARGETS: true
+  UPLOAD_BIN_TARGETS: false
   UPLOAD_BIN_PACKAGES: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
