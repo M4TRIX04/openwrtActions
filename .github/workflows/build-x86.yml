@@ -21,7 +21,8 @@ env:
   CONFIG_FILE: x86.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
-  UPLOAD_BIN_DIR: true
+  UPLOAD_BIN_TARGETS: true
+  UPLOAD_BIN_PARKAGES: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
@@ -109,12 +110,19 @@ jobs:
       if: (!cancelled())
       run: df -hT
 
-    - name: 上传bin压缩目录
+    - name: 上传bin_targets压缩目录
       uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_TARGETS == 'true'
       with:
-        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_bin_targets_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ./openwrt/bin/targets/
+        
+    - name: 上传bin_parkages压缩目录
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_PARKAGES == 'true'
+      with:
+        name: OpenWrt_bin_parkages_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: ./openwrt/bin/parkages/
 
     - name: 整理编译好的固件
       id: organize
@@ -145,3 +153,19 @@ jobs:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
+        
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        retain_days: 30
+        keep_minimum_runs: 6
+        
+    - name: Remove old Releases 
+      uses: dev-drprasad/delete-older-releases@v0.2.1
+      with:
+        keep_latest: 5
+        delete_tag_pattern: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
