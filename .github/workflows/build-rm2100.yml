@@ -8,7 +8,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: Build redmi-ax6_OpenWrt
+name: Build redmi-ac2100_OpenWrt
 
 on:
   repository_dispatch:
