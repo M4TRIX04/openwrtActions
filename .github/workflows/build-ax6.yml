@@ -122,7 +122,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_PACKAGES == 'true'
       with:
-        name: OpenWrt_bin_parkages_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_bin_packages_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ./openwrt/bin/packages/
 
     - name: 整理编译好的固件
