@@ -130,7 +130,8 @@ jobs:
       run: |
         cd openwrt/bin
         zip -q -r Packages.zip packages/
-        mv -f Packages.zip openwrt/bin/targets/*/*
+        cd ../..
+        mv -f openwrt/bin/Packages.zip openwrt/bin/targets/*/*
         cd openwrt/bin/targets/*/*
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
