@@ -139,8 +139,38 @@ jobs:
       run: |
         echo "release_tag=${{ env.TAG_TIME }}" >> $GITHUB_OUTPUT
         touch release.txt
-        echo "[固件源码](https://github.com/coolsnowwolf/lede)" >> release.txt
-        echo "由衷感谢所有为openwrt无私奉献的大佬们" >> release.txt
+        cat >> release.txt <<EOF
+        [固件源码](https://github.com/coolsnowwolf/lede)
+        由衷感谢所有为openwrt无私奉献的大佬们"
+        accesscontrol
+        advanced
+        autoreboot
+        ddns
+        --cloudflare-v4
+        diskman
+        --lsblk
+        filetransfer
+        firewall
+        frps
+        openclash
+        passwall
+        --iptables
+        --chinadns-ng
+        --hysteria
+        --ss-libev-c
+        --ss-libev-s
+        --trojan-plus
+        --v2ray
+        --v2ray-plugin
+        ttyd
+        turboacc
+        --fe cm
+        --bbr
+        --pdnsd
+        upnp
+        vlmcsd
+        wol
+        EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
     - name: 发布至release
