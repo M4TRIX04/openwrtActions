@@ -140,8 +140,6 @@ jobs:
         echo "release_tag=${{ env.TAG_TIME }}" >> $GITHUB_OUTPUT
         touch release.txt
         cat >> release.txt <<EOF
-        [固件源码](https://github.com/coolsnowwolf/lede)
-        由衷感谢所有为openwrt无私奉献的大佬们"
         accesscontrol
         advanced
         autoreboot
