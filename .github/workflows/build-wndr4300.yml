@@ -71,10 +71,10 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P1_SH
         
     - name: 下载插件
-      run: cd ./openwrt && ./scripts/feeds update -a
+      run: ./openwrt/scripts/feeds update -a
 
     - name: 读取插件
-      run: cd ./openwrt && ./scripts/feeds install -a
+      run: ./openwrt/scripts/feeds install -a
 
     - name: 更改设置
       run: |
@@ -132,7 +132,7 @@ jobs:
         cd ../..
         mv -f ./openwrt/bin/Packages.zip ./openwrt/bin/targets/*/*
         cd ./openwrt/bin/targets/*/*
-        rm -rf packages
+        rm -rf packages/
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
