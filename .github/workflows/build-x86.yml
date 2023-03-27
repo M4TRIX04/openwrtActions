@@ -22,7 +22,7 @@ env:
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_TARGETS: false
-  UPLOAD_BIN_PACKAGES: false
+  UPLOAD_BIN_PACKAGES: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
