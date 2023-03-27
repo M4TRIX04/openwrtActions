@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 检查项目分支
+    - name: Checkout
       uses: actions/checkout@main
 
     - name: 安装编译环境
@@ -58,37 +58,37 @@ jobs:
     - name: 下载固件源码
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
-        cd openwrt
+        cd ./openwrt
         useVersionInfo=$(git show -s --date=short --format="%0AAuthor: %an%0Adate: %cd%0Acommit: %s%0Acommit hash: %H")
         echo "useVersionInfo=$useVersionInfo" >> $GITHUB_ENV
         echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
         
     - name: 加载自定义设置
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        cp -rf $GITHUB_WORKSPACE/ax6_generic.mk openwrt/target/linux/ipq807x/image/generic.mk
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF ./openwrt/feeds.conf.default
+        cp -rf $GITHUB_WORKSPACE/ax6_generic.mk ./openwrt/target/linux/ipq807x/image/generic.mk
         chmod +x $DIY_P1_SH
-        cd openwrt
+        cd ./openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
         
     - name: 下载插件
-      run: cd openwrt && ./scripts/feeds update -a
+      run: ./openwrt/scripts/feeds update -a
 
     - name: 读取插件
-      run: cd openwrt && ./scripts/feeds install -a
+      run: ./openwrt/scripts/feeds install -a
 
     - name: 更改设置
       run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        [ -e files ] && mv files ./openwrt/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE ./openwrt/.config
         chmod +x $DIY_P2_SH
-        cd openwrt
+        cd ./openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
         
     - name: 下载安装包
       id: package
       run: |
-        cd openwrt
+        cd ./openwrt
         make defconfig
         make download -j8 V=s
         find dl -size -1024c -exec ls -l {} \;
@@ -97,7 +97,7 @@ jobs:
     - name: 开始编译固件
       id: compile
       run: |
-        cd openwrt
+        cd ./openwrt
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
@@ -128,8 +128,9 @@ jobs:
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        cd openwrt/bin/targets/*/*
-        rm -rf packages
+        cd ./openwrt/bin/targets/*/*
+        zip -qr Packages.zip $(find ./openwrt/bin/packages/ -type f -name "*.ipk")
+        rm -rf packages/
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
