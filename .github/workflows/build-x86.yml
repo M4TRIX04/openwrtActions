@@ -8,7 +8,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: Build wndr4300_OpenWrt
+name: Build x86_OpenWrt
 
 on:
   repository_dispatch:
