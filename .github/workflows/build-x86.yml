@@ -145,9 +145,7 @@ jobs:
         Default password: password
         Default WIFI name: OpenWrt
         Default WIFI password: none
-        Application: accesscontrol,advanced,autoreboot,ddns|cloudflare-v4,diskman-lsblk,filetransfer,firewall,frps,openclash
-        passwall|iptables+chinadns-ng+hysteria+ss-libev-c+ss-libev-s+trojan-plus+v2ray+v2ray-plugin,ttyd,turboacc|sfe_cm+bbr+pdnsd
-        upnp,vlmcsd,wol
+        Application: accesscontrol,advanced,arpbind,autoreboot,ddns(cloudflare-v4),diskman-lsblk,filetransfer,firewall,frps,openclash,passwall(iptables,nftables,chinadns-ng,hysteria,ss-libev-c,ss-libev-s,trojan-plus,v2ray,v2ray-plugin),samba4,ttyd,turboacc(sfe_cm+bbr+pdnsd),upnp,vlmcsd,wol
         EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
