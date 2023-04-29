@@ -145,7 +145,7 @@ jobs:
         Default password: password
         Default WIFI name: OpenWrt
         Default WIFI password: none
-        Application: accesscontrol, advanced, autoreboot, filetransfer, firewall, passwall(iptables, hysteria, ss-libev-c, trojan-plus), turboacc(sfe, bbr, pdnsd), vlmcsd
+        Application: accesscontrol, advanced, autoreboot, filetransfer, firewall, passwall(iptables, hysteria, ss-libev-c, trojan-plus), turboacc(flow offload, bbr, pdnsd), vlmcsd
         EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
