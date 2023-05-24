@@ -138,8 +138,15 @@ jobs:
       run: |
         echo "release_tag=${{ env.TAG_TIME }}" >> $GITHUB_OUTPUT
         touch release.txt
-        echo "[固件源码](https://github.com/coolsnowwolf/lede)" >> release.txt
-        echo "由衷感谢所有为openwrt无私奉献的大佬们" >> release.txt
+        cat >> release.txt <<EOF
+        Default IP: 10.0.0.1
+        Default username: root
+        Default password: password
+        Default WIFI name: OpenWrt
+        Default WIFI password: none
+        Default Theme: ArgonTheme
+        Application: advanced, autoreboot, filetransfer, firewall, mtwifi, openclash, passwall(iptables, hysteria, ss-libev-c, trojan-plus, v2ray), turboacc(sfe_cm+bbr+pdnsd), upnp, vlmcsd, wol
+        EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
     - name: 发布至release
