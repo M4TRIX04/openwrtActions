@@ -147,7 +147,7 @@ jobs:
         Default WIFI name: OpenWrt
         Default WIFI password: none
         Default Theme: ArgonTheme
-        Application: advanced, autoreboot, filetransfer, firewall, ddns(aliyun, cloudflare-v4, dnspod), openclash, passwall(iptables, hysteria, ss-libev-c, trojan-plus, v2ray), turboacc(sfe_cm+bbr+pdnsd), upnp, vlmcsd, wol
+        Application: advanced, autoreboot, filetransfer, firewall, ddns(aliyun, cloudflare-v4, dnspod), passwall(iptables, hysteria, ss-libev-c, trojan-plus, v2ray), turboacc(sfe_cm+bbr+pdnsd), upnp, vlmcsd, wol
         EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
