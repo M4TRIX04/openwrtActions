@@ -59,7 +59,7 @@ jobs:
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         cd ./openwrt
-        git checkout 26f3634 && git checkout -b 26f3634
+        # git checkout 26f3634 && git checkout -b 26f3634
         useVersionInfo=$(git show -s --date=short --format="%0AAuthor: %an%0Adate: %cd%0Acommit: %s%0Acommit hash: %H")
         echo "useVersionInfo=$useVersionInfo" >> $GITHUB_ENV
         echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
@@ -148,7 +148,7 @@ jobs:
         Default WIFI name: OpenWrt
         Default WIFI password: none
         Default Theme: ArgonTheme
-        Application: advanced, autoreboot, filetransfer, firewall, ddns(aliyun, cloudflare-v4, dnspod), passwall(iptables, hysteria, ss-libev-c, trojan-plus, v2ray), turboacc(sfe_cm+bbr+pdnsd), upnp, vlmcsd, wol
+        Application: advanced, autoreboot, ddns(aliyun, cloudflare-v4, dnspod), filetransfer, firewall, passwall(iptables, nftables, hysteria, ss-libev-c, trojan-plus), turboacc(sfe_ecm, bbr, pdnsd), upnp, vlmcsd, wol
         EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
