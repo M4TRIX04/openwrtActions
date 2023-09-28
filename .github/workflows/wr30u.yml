@@ -1,0 +1,177 @@
+# Copyrihgt (C) 2023 M4TRIX04 
+# 
+#
+# Copyright (C) 2019 P3TERX
+# <https://github.com/P3TERX/Actions-OpenWrt>
+
+# Copyright (C) 2020 KFERMercer
+# <https://github.com/KFERMercer/OpenWrt-CI>
+#
+
+name: Build xiaomi-wr30u_OpenWrt
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+
+env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
+  FEEDS_CONF: feeds.conf.default
+  CONFIG_FILE: wr30u.config
+  DIY_P1_SH: diy-part1.sh
+  DIY_P2_SH: diy-part2.sh
+  UPLOAD_BIN_TARGETS: true
+  UPLOAD_BIN_PACKAGES: true
+  UPLOAD_FIRMWARE: true
+  UPLOAD_RELEASE: true
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: 安装编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        docker rmi `docker images -q`
+        sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
+        sudo -E apt-get -qq update
+        sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
+        sudo -E apt-get -y full-upgrade
+        sudo -E apt-get -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential \
+        bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib \
+        git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev \
+        libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
+        mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools libpython3-dev qemu-utils \
+        rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+        sudo -E systemctl daemon-reload
+        sudo -E apt-get -y autoremove --purge
+        sudo -E apt-get clean
+        sudo timedatectl set-timezone "$TZ"
+        
+    - name: 下载固件源码
+      run: |
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        cd ./openwrt
+        useVersionInfo=$(git show -s --date=short --format="%0AAuthor: %an%0Adate: %cd%0Acommit: %s%0Acommit hash: %H")
+        echo "useVersionInfo=$useVersionInfo" >> $GITHUB_ENV
+        echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+        
+    - name: 加载自定义设置
+      run: |
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        chmod +x $DIY_P1_SH
+        cd ./openwrt
+        $GITHUB_WORKSPACE/$DIY_P1_SH
+        
+    - name: 下载插件
+      run: ./openwrt/scripts/feeds update -a
+
+    - name: 读取插件
+      run: ./openwrt/scripts/feeds install -a
+
+    - name: 更改设置
+      run: |
+        [ -e files ] && mv files ./openwrt/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE ./openwrt/.config
+        chmod +x $DIY_P2_SH
+        cd ./openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_SH
+        
+    - name: 下载安装包
+      id: package
+      run: |
+        cd ./openwrt
+        make defconfig
+        make download -j8 V=s
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+        
+    - name: 开始编译固件
+      id: compile
+      run: |
+        cd ./openwrt
+        echo -e "$(nproc) thread compile"
+        make -j$(nproc) || make -j1 V=s
+        echo "status=success" >> $GITHUB_OUTPUT
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+        echo "TAG_TIME=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
+        
+    - name: 查看磁盘使用情况
+      if: (!cancelled())
+      run: df -hT
+
+    - name: 上传bin_targets压缩目录
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_TARGETS == 'true'
+      with:
+        name: OpenWrt_bin_targets_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: ./openwrt/bin/targets/
+        
+    - name: 上传bin_packages压缩目录
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_PACKAGES == 'true'
+      with:
+        name: OpenWrt_bin_packages_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: ./openwrt/bin/packages/
+
+    - name: 整理编译好的固件
+      id: organize
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      run: |
+        cd ./openwrt/bin/targets/*/*
+        rm -rf packages/
+        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+        echo "status=success" >> $GITHUB_OUTPUT
+
+    - name: 创建release标签
+      id: tag
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      run: |
+        echo "release_tag=${{ env.TAG_TIME }}" >> $GITHUB_OUTPUT
+        touch release.txt
+        cat >> release.txt <<EOF
+        Default IP: 10.0.0.1
+        Default username: root
+        Default password: password
+        Default WIFI name: OpenWrt
+        Default WIFI password: none
+        Default Theme: ArgonTheme
+        Application: advanced, autoreboot, filetransfer, firewall,  passwall(iptables, hysteria, ss-libev-c, sing-box, trojan-plus), turboacc(sflow_offload, bbr, pdnsd), upnp, vlmcsd, wol
+        EOF
+        echo "status=success" >> $GITHUB_OUTPUT
+                
+    - name: 发布至release
+      uses: softprops/action-gh-release@v1
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        name: ${{ env.TAG_TIME }}-${{ env.DEVICE_NAME }}
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body_path: release.txt
+        files: ${{ env.FIRMWARE }}/*
+        
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        retain_days: 180
+        keep_minimum_runs: 10
+        
+    - name: Remove old Releases 
+      uses: dev-drprasad/delete-older-releases@v0.2.1
+      with:
+        keep_latest: 10
+        delete_tag_pattern: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
