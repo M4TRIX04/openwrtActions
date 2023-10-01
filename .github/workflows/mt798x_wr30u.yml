@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 
 env:
-  REPO_URL: git clone https://github.com/hanwckf/immortalwrt-mt798x
+  REPO_URL: https://github.com/hanwckf/immortalwrt-mt798x
   REPO_BRANCH: openwrt-21.02
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: mt798x_wr30u.config
