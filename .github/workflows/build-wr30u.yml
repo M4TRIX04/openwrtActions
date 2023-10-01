@@ -59,7 +59,7 @@ jobs:
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         cd ./openwrt
-        git checkout 040575e&& git checkout -b 040575e
+        git checkout 040575e && git checkout -b 040575e
         useVersionInfo=$(git show -s --date=short --format="%0AAuthor: %an%0Adate: %cd%0Acommit: %s%0Acommit hash: %H")
         echo "useVersionInfo=$useVersionInfo" >> $GITHUB_ENV
         echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
