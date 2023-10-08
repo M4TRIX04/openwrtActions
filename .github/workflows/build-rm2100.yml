@@ -13,12 +13,12 @@ name: Build redmi-ac2100_OpenWrt
 on:
   workflow_dispatch:
     inputs:
-    chosen-os:
-      required: true
-      type: choice
-      options:
-      - https://github.com/coolsnowwolf/lede
-      - https://github.com/M4TRIX04/lede
+      chosen-os:
+        required: true
+        type: choice
+        options:
+        - https://github.com/coolsnowwolf/lede
+        - https://github.com/M4TRIX04/lede
 
 env:
   REPO_URL: ${{ inputs.chosen-os }}
