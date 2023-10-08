@@ -13,9 +13,16 @@ name: Build redmi-ac2100_OpenWrt
 on:
   repository_dispatch:
   workflow_dispatch:
+    inputs:
+    chosen-os:
+      required: true
+      type: choice
+      options:
+      - https://github.com/coolsnowwolf/lede
+      - https://github.com/M4TRIX04/lede
 
 env:
-  REPO_URL: https://github.com/M4TRIX04/lede
+  REPO_URL: ${{ inputs.chosen-os }}
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: rm2100.config
