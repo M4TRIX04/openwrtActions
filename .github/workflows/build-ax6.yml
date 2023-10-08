@@ -11,7 +11,6 @@
 name: Build redmi-ax6_OpenWrt
 
 on:
-  repository_dispatch:
   workflow_dispatch:
 
 env:
