@@ -11,7 +11,6 @@
 name: Build xiaomi-wr30u_immortalwrt-mt798x
 
 on:
-  repository_dispatch:
   workflow_dispatch:
 
 env:
