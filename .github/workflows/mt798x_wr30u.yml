@@ -17,7 +17,7 @@ env:
   REPO_URL: https://github.com/hanwckf/immortalwrt-mt798x
   REPO_BRANCH: openwrt-21.02
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: mt798x_wr30u.config
+  CONFIG_FILE: wr30u_mt798x.config
   DIY_P1_SH: custom-3.sh
   DIY_P2_SH: custom-2.sh
   UPLOAD_BIN_TARGETS: true
