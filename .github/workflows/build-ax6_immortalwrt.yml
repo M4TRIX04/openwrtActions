@@ -8,7 +8,7 @@
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 
-name: Build redmi-ax6_OpenWrt
+name: Build redmi-ax6_immortalwrt
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: ax6.config
+  CONFIG_FILE: ax6_immortalwrt.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_TARGETS: true
