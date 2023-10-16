@@ -17,16 +17,16 @@ on:
         required: true
         type: choice
         options:
+        - https://github.com/immortalwrt/immortalwrt
         - https://github.com/coolsnowwolf/lede
-        - https://github.com/M4TRIX04/lede
-
+        
 env:
   REPO_URL: ${{ inputs.Repo }}
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: rm2100.config
-  DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
+  DIY_P1_SH: custom-1.sh
+  DIY_P2_SH: custom-2.sh
   UPLOAD_BIN_TARGETS: true
   UPLOAD_BIN_PACKAGES: true
   UPLOAD_FIRMWARE: true
