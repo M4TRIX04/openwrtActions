@@ -17,9 +17,9 @@ on:
         required: true
         type: choice
         options:
+        - https://github.com/immortalwrt/immortalwrt
         - https://github.com/coolsnowwolf/lede
-        - https://github.com/M4TRIX04/lede
-
+        
 env:
   REPO_URL: ${{ inputs.Repo }}
   REPO_BRANCH: master
