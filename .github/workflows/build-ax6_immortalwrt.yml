@@ -12,10 +12,26 @@ name: Build redmi-ax6_immortalwrt
 
 on:
   workflow_dispatch:
-
+    inputs:
+      Repo:
+        required: true
+        type: choice
+        options:
+        - https://github.com/immortalwrt/immortalwrt
+        - https://github.com/coolsnowwolf/lede
+        - https://github.com/openwrt/openwrt
+      Branch:
+        required: true
+        type: choice
+        options:
+        - openwrt-23.05
+        - openwrt-21.02
+        - master
+        
+        
 env:
-  REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: master
+  REPO_URL: ${{ inputs.Repo }}
+  REPO_BRANCH: ${{ inputs.Branch }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: ax6_immortalwrt.config
   DIY_P1_SH: custom-1.sh
