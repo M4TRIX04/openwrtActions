@@ -141,6 +141,7 @@ jobs:
         echo "release_tag=${{ env.TAG_TIME }}" >> $GITHUB_OUTPUT
         touch release.txt
         cat >> release.txt <<EOF
+        Repository: https://github.com/hanwckf/immortalwrt-mt798x;openwrt-21.02
         Default IP: 10.0.0.1
         Default username: root
         Default password: password
