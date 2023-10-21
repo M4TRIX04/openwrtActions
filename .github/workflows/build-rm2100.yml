@@ -157,13 +157,14 @@ jobs:
         echo "release_tag=${{ env.TAG_TIME }}" >> $GITHUB_OUTPUT
         touch release.txt
         cat >> release.txt <<EOF
+        Repository: ${{ inputs.Repo }}; ${{ inputs.Branch }}
         Default IP: 10.0.0.1
         Default username: root
         Default password: password
         Default WIFI name: OpenWrt
         Default WIFI password: none
         Default Theme: ArgonTheme
-        Application: autoreboot, filetransfer, firewall, mtwifi, passwall(iptables, ss-libev-c, ss-rust-c, trojan-plus), turboacc(flow_offload, bbr, pdnsd), vlmcsd, wol
+        Application: autoreboot, filetransfer, firewall, mtwifi, passwall(ss-libev-c, ss-rust-c, trojan-plus), vlmcsd, wol
         EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
