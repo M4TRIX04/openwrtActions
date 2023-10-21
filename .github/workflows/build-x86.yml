@@ -159,7 +159,7 @@ jobs:
         Default username: root
         Default password: password
         Default Theme: Argon
-        Application: accesscontrol, advanced, arpbind, autoreboot, ddns(cloudflare-v4), diskman(lsblk), filetransfer, firewall, frps, openclash, passwall(iptables, nftables, hysteria, ss-libev-c, ss-libev-s, trojan-plus, v2ray, v2ray-plugin), samba4, ttyd, turboacc(sfe_cm, bbr, pdnsd), upnp, vlmcsd, wol
+        Application: autoreboot, ddns(cloudflare-v4), filetransfer, firewall, opkg, passwall(ss-libev-s, ss-libev-c, ss-rust-s, ss-rust-c, trojan-plus, ipt2socks), vlmcsd, wol
         EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
