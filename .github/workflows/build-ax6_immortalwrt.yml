@@ -24,9 +24,9 @@ on:
         required: true
         type: choice
         options:
+        - master
         - openwrt-23.05
         - openwrt-21.02
-        - master
         
         
 env:
