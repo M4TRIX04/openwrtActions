@@ -85,10 +85,13 @@ jobs:
         chmod +x $DIY_P1_SH
         cd ./openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
-        rm -fr feeds/luci/applications/luci-app-passwall
+        
         
     - name: 下载插件
       run: ./openwrt/scripts/feeds update -a
+
+    - name: Delete passwall from applications
+      run: rm -fr /openwrt/feeds/luci/applications/luci-app-passwall
 
     - name: 读取插件
       run: ./openwrt/scripts/feeds install -a
