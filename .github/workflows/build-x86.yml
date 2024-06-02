@@ -24,9 +24,10 @@ on:
         required: true
         type: choice
         options:
+        - master
         - openwrt-23.05
         - openwrt-21.02
-        - master
+
         
         
 env:
@@ -36,7 +37,7 @@ env:
   CONFIG_FILE: x86.config
   DIY_P1_SH: custom-1.sh
   DIY_P2_SH: custom-2.sh
-  UPLOAD_BIN_TARGETS: false
+  UPLOAD_BIN_TARGETS: true
   UPLOAD_BIN_PACKAGES: true
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
@@ -58,13 +59,14 @@ jobs:
         sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
         sudo -E apt-get -qq update
         sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
-        sudo -E apt-get -y full-upgrade
-        sudo -E apt-get -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential \
-        bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib \
-        git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev \
-        libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
-        mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools libpython3-dev qemu-utils \
-        rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+        sudo -E apt-get -y install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+        bzip2 ccache clang cmake cpio curl device-tree-compiler ecj fastjar flex gawk gettext gcc-multilib \
+        g++-multilib genisoimage git gnutls-dev gperf haveged help2man intltool jq lib32gcc-s1 libc6-dev-i386 libelf-dev \
+        libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5 \
+        libncursesw5-dev libpython3-dev libreadline-dev libssl-dev libtool lld llvm lrzsz mkisofs msmtp \
+        nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip python3-ply \
+        python3-docutils python3-pyelftools qemu-utils quilt re2c rsync scons squashfs-tools subversion swig \
+        texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zstd zlib1g-dev
         sudo -E systemctl daemon-reload
         sudo -E apt-get -y autoremove --purge
         sudo -E apt-get clean
@@ -80,16 +82,18 @@ jobs:
         
     - name: 加载自定义设置
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF ./openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd ./openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
         
+        
     - name: 下载插件
-      run: ./openwrt/scripts/feeds update -a
-
-    - name: 读取插件
-      run: ./openwrt/scripts/feeds install -a
+      run: |
+        ./openwrt/scripts/feeds update -a
+        rm -fr /openwrt/feeds/luci/applications/luci-app-passwall
+        ./openwrt/scripts/feeds update -a
+        ./openwrt/scripts/feeds install -a
 
     - name: 更改设置
       run: |
@@ -98,8 +102,6 @@ jobs:
         chmod +x $DIY_P2_SH
         cd ./openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-        ### Change Kernel version to 6.1
-        #sed -i 's/KERNEL_PATCHVER:=5.15/KERNEL_PATCHVER:=6.1/g' target/linux/x86/Makefile
         
     - name: 下载安装包
       id: package
@@ -161,13 +163,15 @@ jobs:
         Default IP: 10.0.0.1
         Default username: root
         Default password: password
-        Default Theme: Argon
-        Application: autoreboot, ddns(cloudflare-v4), diskman(btrfs-progs, lsblk), filetransfer, firewall, opkg, passwall(ss-libev-s, s-libev-c, trojan-plus, ipt2socks), vlmcsd, wol
+        Default WIFI name: OpenWrt
+        Default WIFI password: none
+        Default Theme: ArgonTheme
+        Application: autoreboot, ddns(cloudflare-v4), filetransfer, firewall, passwall(ss-libev-s, ss-rust-s, ss-rust-c, trojan-plus, ipt2socks), vlmcsd, wol
         EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
     - name: 发布至release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -186,7 +190,7 @@ jobs:
         keep_minimum_runs: 10
         
     - name: Remove old Releases 
-      uses: dev-drprasad/delete-older-releases@v0.2.1
+      uses: dev-drprasad/delete-older-releases@v0.3.4
       with:
         keep_latest: 10
         delete_tag_pattern: true
