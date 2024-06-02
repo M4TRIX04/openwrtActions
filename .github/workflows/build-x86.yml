@@ -27,9 +27,7 @@ on:
         - master
         - openwrt-23.05
         - openwrt-21.02
-
-        
-        
+     
 env:
   REPO_URL: ${{ inputs.Repo }}
   REPO_BRANCH: ${{ inputs.Branch }}
