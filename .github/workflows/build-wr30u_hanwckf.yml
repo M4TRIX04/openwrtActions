@@ -74,8 +74,6 @@ jobs:
     - name: 下载插件
       run: |
         ./openwrt/scripts/feeds update -a
-        rm -fr /openwrt/feeds/luci/applications/luci-app-passwall
-        ./openwrt/scripts/feeds update -a
         ./openwrt/scripts/feeds install -a
 
     - name: 更改设置
