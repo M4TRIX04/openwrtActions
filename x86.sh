@@ -10,12 +10,6 @@
 # Description: OpenWrt DIY script part 1 (Before Update feeds)
 #
 
-# Uncomment a feed source
-#sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
-
-# Add a feed source
-#echo 'src-git small https://github.com/kenzok8/small.git^8dfade7192162fade6d05b6447da4f7fe6b8bbe6' >>feeds.conf.default
-
 # Modify package and luci to the latest hysteria 1.3.5 commit of immortal
 sed -i 's/packages.git/packages.git^9714ef438711f7069d2e28f0c59733565ac8d6ef/g' feeds.conf.default \
 && sed -i 's/luci.git/luci.git^084b82067ce7e9664fbf471597acce613521044e/g' feeds.conf.default
