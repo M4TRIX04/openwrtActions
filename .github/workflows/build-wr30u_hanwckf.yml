@@ -18,7 +18,7 @@ env:
   REPO_BRANCH: openwrt-21.02
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: wr30u_mt798x.config
-  DIY_P1_SH: custom-3.sh
+  DIY_P1_SH: wr30u_hanwckf.sh
   DIY_P2_SH: custom-2.sh
   UPLOAD_BIN_TARGETS: true
   UPLOAD_BIN_PACKAGES: true
