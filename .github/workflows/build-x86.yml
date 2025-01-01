@@ -33,7 +33,7 @@ env:
   REPO_BRANCH: ${{ inputs.Branch }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: x86.config
-  DIY_P1_SH: custom-1.sh
+  DIY_P1_SH: x86.sh
   DIY_P2_SH: custom-2.sh
   UPLOAD_BIN_TARGETS: true
   UPLOAD_BIN_PACKAGES: true
