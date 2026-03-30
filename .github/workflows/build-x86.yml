@@ -18,13 +18,13 @@ on:
         type: choice
         options:
         - https://github.com/immortalwrt/immortalwrt
-        - https://github.com/coolsnowwolf/lede
         - https://github.com/openwrt/openwrt
       Branch:
         required: true
         type: choice
         options:
         - master
+        - openwrt-24.10
         - openwrt-23.05
         - openwrt-21.02
      
