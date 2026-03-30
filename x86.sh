@@ -10,6 +10,6 @@
 # Description: OpenWrt DIY script part 1 (Before Update feeds)
 #
 
-# Modify package and luci to the latest hysteria 1.3.5 commit of immortal
-sed -i 's/packages.git/packages.git^9714ef438711f7069d2e28f0c59733565ac8d6ef/g' feeds.conf.default \
-&& sed -i 's/luci.git/luci.git^084b82067ce7e9664fbf471597acce613521044e/g' feeds.conf.default
+# Add passwall packages and luci sources
+sed -i '1i\src-git passwall_packages https://github.com/M4TRIX04/openwrt-passwall-packages.git;main' feeds.conf.default \
+&& sed -i '1i\src-git passwall_luci https://github.com/M4TRIX04/openwrt-passwall.git;main' feeds.conf.default
