@@ -11,5 +11,5 @@
 #
 
 # Add passwall packages and luci sources
-sed -i '1i\src-git passwall_packages https://github.com/M4TRIX04/openwrt-passwall-packages.git;main' feeds.conf.default \
-&& sed -i '1i\src-git passwall_luci https://github.com/M4TRIX04/openwrt-passwall.git;main' feeds.conf.default
+#sed -i '1i\src-git passwall_packages https://github.com/M4TRIX04/openwrt-passwall-packages.git;main' feeds.conf.default \
+#&& sed -i '1i\src-git passwall_luci https://github.com/M4TRIX04/openwrt-passwall.git;main' feeds.conf.default
