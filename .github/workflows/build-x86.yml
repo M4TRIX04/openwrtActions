@@ -27,6 +27,13 @@ on:
         - openwrt-24.10
         - openwrt-23.05
         - openwrt-21.02
+      Passwall:
+        required: true
+        type: choice
+        options:
+        - Openwrt-Passwall
+        - M4TRIX04
+
      
 env:
   REPO_URL: ${{ inputs.Repo }}
@@ -95,9 +102,9 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,haproxy} && \
-        git clone https://github.com/M4TRIX04/openwrt-passwall-packages package/passwall-packages && \
+        git clone https://github.com/${{ inputs.Passwall }}/openwrt-passwall-packages package/passwall-packages && \
         rm -vrf feeds/luci/applications/luci-app-passwall && \
-        git clone https://github.com/M4TRIX04/openwrt-passwall package/passwall-luci
+        git clone https://github.com/${{ inputs.Passwall }}/openwrt-passwall package/passwall-luci
 
     - name: 更改设置
       run: |
