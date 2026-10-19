@@ -159,7 +159,13 @@ jobs:
       run: |
         cd ./openwrt/bin/targets/*/*
         rm -rf packages/
-        zip -qr Packages.zip $(find $GITHUB_WORKSPACE/openwrt/bin/packages/ -type f -name "*.ipk")
+        # 存入数组
+        readarray -t PKG_FILES < <(find "$PWD/packages/" -type f \( -name "*.ipk" -o -name "*.apk" \))
+        if [ ${#PKG_FILES[@]} -gt 0 ]; then
+          zip -qr Packages.zip "${PKG_FILES[@]}"
+        else
+          echo "No ipk/apk packages found, skip zip"
+        fi
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
