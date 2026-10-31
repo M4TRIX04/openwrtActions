@@ -27,12 +27,14 @@ on:
         - openwrt-25.12
         - openwrt-24.10
         - openwrt-23.05
+        default: openwrt-24.10
       Passwall:
         required: true
         type: choice
         options:
         - Openwrt-Passwall
         - M4TRIX04
+        default: M4TRIX04
 
      
 env:
