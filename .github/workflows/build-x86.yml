@@ -101,11 +101,26 @@ jobs:
         cd ./openwrt
         ./scripts/feeds update -a
         ./scripts/feeds install -a
-        rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,haproxy} && \
-        git clone https://github.com/${{ inputs.Passwall }}/openwrt-passwall-packages package/passwall-packages && \
-        rm -vrf feeds/luci/applications/luci-app-passwall && \
-        git clone https://github.com/${{ inputs.Passwall }}/openwrt-passwall package/passwall-luci
 
+    
+    - name: p4ssw4ll
+      if: ${{ inputs.Passwall == 'M4TRIX04' }}
+      run: |
+        cd ./openwrt
+        rm -rf feeds/luci/applications/luci-app-passwall
+        rm -rf feeds/packages/net/hysteria feeds/packages/net/dns2tcp
+        git clone https://github.com/M4TRIX04/P455W4LL package/passwall-luci
+
+    - name: passwall
+      if: ${{ inputs.Passwall == 'Openwrt-Passwall' }}      
+      run: |
+        cd ./openwrt
+        rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,smartdns}
+        git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
+        rm -rf feeds/luci/applications/luci-app-passwall
+        git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/passwall-luci
+
+        
     - name: 更改设置
       run: |
         [ -e files ] && mv files ./openwrt/files
@@ -143,14 +158,14 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_TARGETS == 'true'
       with:
-        name: OpenWrt_bin_targets_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_bin_targets
         path: ./openwrt/bin/targets/
         
     - name: 上传bin_packages压缩目录
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_PACKAGES == 'true'
       with:
-        name: OpenWrt_bin_packages_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_bin_packages
         path: ./openwrt/bin/packages/
 
     - name: 整理编译好的固件
