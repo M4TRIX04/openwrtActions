@@ -105,9 +105,10 @@ jobs:
       if: ${{ inputs.Passwall == 'M4TRIX04' }}
       run: |
         cd ./openwrt
+        rm -rf feeds/packages/net/{chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,tcping,shadowsocks-libev}
         rm -rf feeds/luci/applications/luci-app-passwall
-        rm -rf feeds/packages/net/hysteria feeds/packages/net/dns2tcp
-        git clone https://github.com/M4TRIX04/P455W4LL package/passwall-luci
+        git clone --depth 1 https://github.com/M4TRIX04/openwrt-passwall-packages package/passwall-packages
+        git clone --depth 1 https://github.com/M4TRIX04/openwrt-passwall package/passwall-luci
 
     - name: passwall
       if: ${{ inputs.Passwall == 'Openwrt-Passwall' }}      
@@ -117,7 +118,6 @@ jobs:
         git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
         rm -rf feeds/luci/applications/luci-app-passwall
         git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/passwall-luci
-
         
     - name: 更改设置
       run: |
