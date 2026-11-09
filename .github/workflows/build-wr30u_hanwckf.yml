@@ -109,14 +109,14 @@ jobs:
       run: df -hT
 
     - name: 上传bin_targets压缩目录
-      uses: actions/upload-artifact@main
+      uses: actions/upload-artifact@v4
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_TARGETS == 'true'
       with:
         name: OpenWrt_bin_targets_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ./openwrt/bin/targets/
         
     - name: 上传bin_packages压缩目录
-      uses: actions/upload-artifact@main
+      uses: actions/upload-artifact@v4
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_PACKAGES == 'true'
       with:
         name: OpenWrt_bin_packages_${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
@@ -151,7 +151,7 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
                 
     - name: 发布至release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
