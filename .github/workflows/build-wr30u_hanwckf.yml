@@ -36,10 +36,6 @@ jobs:
 
     - name: 检查服务器配置
       run: |
-        echo "警告⚠"
-        echo "若分配的服务器性能不足，务必及时取消，重新运行！"
-        echo "已知编译成功CPU型号：8370C,8171M"
-        echo "已知性能不足CPU型号：8272CL"
         echo -e "-------------- ------------CPU信息------------------------------------------\n"
         echo "CPU物理数量:$(cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l)"
         echo -e "CPU核心及版本信息：$(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
@@ -60,7 +56,7 @@ jobs:
         
     - name: 下载固件源码
       run: |
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        git clone --filter=blob:none $REPO_URL -b $REPO_BRANCH openwrt
         cd ./openwrt
         useVersionInfo=$(git show -s --date=short --format="%0AAuthor: %an%0Adate: %cd%0Acommit: %s%0Acommit hash: %H")
         echo "useVersionInfo=$useVersionInfo" >> $GITHUB_ENV
