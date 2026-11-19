@@ -14,15 +14,14 @@ on:
   workflow_dispatch:
     inputs:
       LAN_IP:
-      description: 'Default LAN IPv4 address (CIDR)'
-      required: true
-      type: choice
-      options:
-        - '192.168.1.1/24'
-        - '10.0.0.1/8'
-        - '172.16.0.1/24'
-      default: '10.0.0.1/8'  
-
+        description: 'Default LAN IPv4 address (CIDR)'
+        required: true
+        type: choice
+        options:
+          - '192.168.1.1/24'
+          - '10.0.0.1/8'
+          - '172.16.0.1/24'
+        default: '10.0.0.1/8'  
 env:
   REPO_URL: https://github.com/hanwckf/immortalwrt-mt798x
   REPO_BRANCH: openwrt-21.02
@@ -151,13 +150,9 @@ jobs:
         touch release.txt
         cat >> release.txt <<EOF
         Repository: ${{ inputs.Repo }}/tree/${{ inputs.Branch }}
-        Default IP: 10.0.0.1
-        Default username: root
-        Default password: password
-        Default WIFI name: OpenWrt
-        Default WIFI password: none
+        Default LAN: $LAN_IP
         Default Theme: ArgonTheme
-        Application: autoreboot, ddns(cloudflare-v4), filetransfer, firewall, passwall(ss-libev-s, ss-rust-s, ss-rust-c, trojan-plus, ipt2socks), vlmcsd, wol
+        Application: autoreboot, passwall(hysteria, ss-libev), vlmcsd, wol
         EOF
         echo "status=success" >> $GITHUB_OUTPUT
                 
