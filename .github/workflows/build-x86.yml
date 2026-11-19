@@ -28,6 +28,15 @@ on:
         - openwrt-24.10
         - openwrt-23.05
         default: openwrt-24.10
+      LAN_IP:
+        description: 'Default LAN IPv4 address (CIDR)'
+        required: true
+        type: choice
+        options:
+          - '192.168.1.1/24'
+          - '10.0.0.1/8'
+          - '172.16.0.1/24'
+        default: '10.0.0.1/8'      
       Passwall:
         required: true
         type: choice
@@ -40,6 +49,7 @@ on:
 env:
   REPO_URL: ${{ inputs.Repo }}
   REPO_BRANCH: ${{ inputs.Branch }}
+  LAN_IP: ${{ inputs.LAN_IP || '10.0.0.1/8' }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: x86.config
   DIY_P1_SH: x86.sh
@@ -190,7 +200,7 @@ jobs:
         touch release.txt
         cat >> release.txt <<EOF
         Repository: ${{ inputs.Repo }}/tree/${{ inputs.Branch }}
-        Default IP: 10.0.0.1
+        Default LAN: $LAN_IP
         Default username: root
         Default password: password
         Default WIFI name: OpenWrt
