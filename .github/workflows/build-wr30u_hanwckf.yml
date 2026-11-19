@@ -12,11 +12,22 @@ name: Build xiaomi-wr30u_immortalwrt-mt798x
 
 on:
   workflow_dispatch:
+    inputs:
+      LAN_IP:
+      description: 'Default LAN IPv4 address (CIDR)'
+      required: true
+      type: choice
+      options:
+        - '192.168.1.1/24'
+        - '10.0.0.1/8'
+        - '172.16.0.1/24'
+      default: '10.0.0.1/8'  
 
 env:
   REPO_URL: https://github.com/hanwckf/immortalwrt-mt798x
   REPO_BRANCH: openwrt-21.02
   FEEDS_CONF: feeds.conf.default
+  LAN_IP: ${{ inputs.LAN_IP || '10.0.0.1/8' }}
   CONFIG_FILE: wr30u_hanwckf.config
   DIY_P1_SH: wr30u_hanwckf.sh
   DIY_P2_SH: custom-2.sh
